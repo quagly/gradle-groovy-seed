@@ -4,8 +4,6 @@
 # Ignore Gradle GUI config
 gradle-app.setting
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
 
 # Cache of project
 .gradletasknamecache
@@ -21,6 +19,11 @@ gradle-app.setting
 
 # and jars
 *.jar
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+# if gradle-wrapper.jar is missing then ./gradlew will throw
+# Error: Could not find or load main class org.gradle.wrapper.GradleWrapperMain
+!gradle-wrapper.jar
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
