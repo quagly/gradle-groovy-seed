@@ -10,5 +10,6 @@ includes:
 * hello world script and class examples
 * hello world test cases
 
-only dependency is java SDK.  Just run ./gradlew to run
-default behavior is to run all tests
+only dependency is java SDK.  Just run 
+> ./gradlew
+to run.  Default behavior is to run all tests.
