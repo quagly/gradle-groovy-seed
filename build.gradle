@@ -77,16 +77,14 @@ codenarcTest {
 
 // cobertura test coverage setting
 // I can't get cobertura to ignore logging
-/*
 cobertura {
     coverageIgnoreTrivial = true          
    // coverageIgnores = ['groovy.util.logging.*', 'org.apache.log4j.*']      
     coverageIgnores = ['groovy/util/logging/*', 'org/apache/log4j/*']      
    // fail the build if coverage rates are not met
-    coverageCheckHaltOnFailure = true
-//      coverageReportDir = new File("$buildDir/reports/cobertura") 
+   // coverageCheckHaltOnFailure = true
+   // coverageReportDir = new File("$buildDir/reports/cobertura") 
 }
-*/
 
 
 // say why if test fails
