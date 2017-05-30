@@ -1,0 +1,122 @@
+// nifty new gradle 2.1 plugin syntax
+// for community plugins 
+// https://plugins.gradle.org/plugin/net.saliman.cobertura
+/*
+ * adding cobertura in as it is a dependency for a codenarc check 
+ * haven't got coverage reporting working yet.  
+ * cobertura tasks are skipped.  probably need to be configured
+*/
+plugins {
+  id 'net.saliman.cobertura' version '2.4.0'
+}
+apply plugin: 'base'
+apply plugin: 'groovy'
+apply plugin: 'codenarc'
+
+def groovyVer = '2.4.11'
+def spockVer = '1.0-groovy-2.4'
+def codenarcVer = '0.27.0'
+// cobertura software version is different from cobertura plug-in version
+// def coberturaVer = '2.1.1'
+
+// note GradleVersion is an internal class and may change
+// I have not found another way to print gradle version
+logger.info(GradleVersion.current().toString())
+
+defaultTasks 'test'
+
+repositories {
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+  compile "org.codehaus.groovy:groovy-all:${groovyVer}"
+  compile 'log4j:log4j:1.2.17'
+
+  testCompile "org.spockframework:spock-core:${spockVer}" 
+  // testruntime "cglib:cglib-nodep:3.1" // allows mocking of classes (in addition to interfaces)
+  // testruntime "org.objenesis:objenesis:2.1" // allows mocking of classes without default constructor (together with cglib)
+
+	// with this dependency added codenarc failed with ant task not found error
+  // still need to learn about how to configure cobertura
+	// maybe this interferes with the plug-in
+  // codenarc "net.sourceforge.cobertura:cobertura:${coberturaVer}"
+}
+
+codenarc {
+  toolVersion = codenarcVer
+  reportFormat = 'text'
+}
+
+codenarcMain {
+  ignoreFailures false
+  // path requires double quotes
+  config = resources.text.fromFile("config/codenarc/main-rules-27.groovy")
+
+  maxPriority1Violations 0
+  maxPriority2Violations 0
+  maxPriority3Violations 0
+}
+
+codenarcTest {
+  ignoreFailures false
+  config = resources.text.fromFile("config/codenarc/test-rules-27.groovy")
+
+  maxPriority1Violations 0
+  maxPriority2Violations 0
+  maxPriority3Violations 0
+}
+
+// cobertura test coverage setting
+// I can't get cobertura to ignore logging
+/*
+cobertura {
+    coverageIgnoreTrivial = true          
+   // coverageIgnores = ['groovy.util.logging.*', 'org.apache.log4j.*']      
+    coverageIgnores = ['groovy/util/logging/*', 'org/apache/log4j/*']      
+   // fail the build if coverage rates are not met
+    coverageCheckHaltOnFailure = true
+//      coverageReportDir = new File("$buildDir/reports/cobertura") 
+}
+*/
+
+
+// say why if test fails
+// so that I don't have to open the html report to look
+test {
+	// example of how to 
+  // pass all system properties to tests
+  // systemProperties = System.getProperties()
+  // pass uri, user, password system properties to test
+  // systemProperty "talend.uri", System.getProperty('talend.uri') 
+  // systemProperty "talend.user", System.getProperty('talend.user') 
+  // systemProperty "talend.password", System.getProperty('talend.password') 
+  testLogging {
+    // show STDOUT
+    showStandardStreams = true
+    // show what failed
+    exceptionFormat = 'full'
+  }
+}
+
+task runScript(type: JavaExec) {
+  description 'Run a script'
+  //systemProperties = System.getProperties()
+	// example of passing system properties to script
+  // pass uri, user, and password from system properties
+  systemProperty "talend.uri", System.getProperty('talend.uri') 
+  systemProperty "talend.user", System.getProperty('talend.user') 
+  systemProperty "talend.password", System.getProperty('talend.password') 
+  logger.info( 'uri is ' + System.properties['talend.uri'] )
+  
+  // Set main property to name of script
+  //main = 'com.cambiahealth.talend.exampleRunTask'
+  //main = 'com.cambiahealth.talend.exampleRunServer'
+  // main = 'hello_world'
+  main = 'hello_world_class'
+
+  // Set classpath for running the Groovy script.
+  classpath = sourceSets.main.runtimeClasspath
+}
+

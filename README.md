@@ -14,3 +14,5 @@ only dependency is java SDK.  Just run
 > ./gradlew
 
 to run.  Default behavior is to run all tests.
+
+log4j.properties in src/main/resources
