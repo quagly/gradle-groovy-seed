@@ -14,8 +14,10 @@ apply plugin: 'groovy'
 apply plugin: 'codenarc'
 
 def groovyVer = '2.4.11'
-def spockVer = '1.0-groovy-2.4'
+def spockVer = '1.1-groovy-2.4'
 def codenarcVer = '0.27.0'
+// version of slf4j to use with cobertura
+def slf4jVer = '1.7.25'
 // cobertura software version is different from cobertura plug-in version
 // def coberturaVer = '2.1.1'
 
@@ -35,6 +37,8 @@ dependencies {
   compile 'log4j:log4j:1.2.17'
 
   testCompile "org.spockframework:spock-core:${spockVer}" 
+	// required for cobertura
+	testRuntime "org.slf4j:slf4j-api:${slf4jVer}"
   // testruntime "cglib:cglib-nodep:3.1" // allows mocking of classes (in addition to interfaces)
   // testruntime "org.objenesis:objenesis:2.1" // allows mocking of classes without default constructor (together with cglib)
 

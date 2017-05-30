@@ -6,7 +6,7 @@ includes:
 * groovy language
 * spock test framework
 * codenarc for static code analysis
-* coburtura for test coverage reports - not yet implemented
+* coburtura for test coverage reports - runs but not configured 
 * hello world script and class examples
 * hello world test cases
 
